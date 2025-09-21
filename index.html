@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Will It Rain On My Parade? — Smart Weather Forecasting for Outdoor Event Planning</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="starfield min-h-screen text-slate-100">
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+    <!-- Floating astronaut (decorative) -->
+    <div aria-hidden="true" class="hidden md:block absolute -right-10 -top-6 rotate-6 opacity-70" style="animation: floaty 7s ease-in-out infinite; filter: drop-shadow(0 5px 14px rgba(0,0,0,.45)); z-index:0;">
+      <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g>
+          <circle cx="60" cy="60" r="54" fill="url(#grad)" opacity=".15"/>
+          <defs>
+            <radialGradient id="grad" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(60 60) rotate(90) scale(60)">
+              <stop stop-color="#24d2f7"/><stop offset="1" stop-color="#9b8cff"/>
+            </radialGradient>
+          </defs>
+          <rect x="50" y="30" width="20" height="26" rx="6" fill="#e2e8f0"/>
+          <rect x="46" y="54" width="28" height="30" rx="8" fill="#e5e7eb"/>
+          <rect x="44" y="58" width="8" height="14" rx="3" fill="#a5b4fc"/>
+          <rect x="68" y="58" width="8" height="14" rx="3" fill="#a5b4fc"/>
+          <circle cx="60" cy="40" r="8" fill="#0f172a"/>
+          <path d="M35 70 C50 60, 70 90, 90 80" stroke="#99f6e4" stroke-width="3" fill="none"/>
+        </g>
+      </svg>
+    </div>
+    <!-- Global Header -->
+    <header class="mb-6">
+      <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
+        <div class="relative">
+          <div class="inline-flex items-center gap-3">
+            <!-- Animated planet icon -->
+            <svg aria-hidden="true" viewBox="0 0 64 64" class="w-10 h-10" style="filter: drop-shadow(0 3px 8px rgba(36,210,247,.35)); animation: floaty 6s ease-in-out infinite;">
+              <defs>
+                <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#24d2f7"/><stop offset="100%" stop-color="#9b8cff"/>
+                </linearGradient>
+              </defs>
+              <circle cx="32" cy="32" r="16" fill="url(#g1)"/>
+              <ellipse cx="32" cy="32" rx="24" ry="8" fill="none" stroke="#8adfff" stroke-width="2"/>
+            </svg>
+            <div>
+              <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-contrast">
+                Will It Rain On My Parade?
+              </h1>
+              <p class="mt-1 text-slate-300">Smart Weather Forecasting for Outdoor Event Planning</p>
+            </div>
+          </div>
+          <!-- Decorative aurora streak -->
+          <div aria-hidden="true" class="absolute -z-0 -top-6 -left-6 w-40 h-40 blur-2xl opacity-30" style="background: radial-gradient(closest-side, rgba(36,210,247,.5), transparent 70%), radial-gradient(closest-side, rgba(155,140,255,.35), transparent 70%);"></div>
+        </div>
+        <div class="flex items-center gap-2 text-xs text-slate-300">
+          <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyan-400/30 bg-cyan-400/10">
+            <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span> Live Prototype
+          </span>
+          <span class="hidden sm:inline">•</span>
+          <span>Accessible colors • Responsive</span>
+        </div>
+      </div>
+
+      <!-- Top Navigation -->
+      <nav class="mt-6 glass rounded-2xl p-2 sm:p-3">
+        <ul class="flex flex-wrap gap-2 sm:gap-3" role="tablist" aria-label="Main sections">
+          <li><a href="#/forecast" class="nav-link inline-flex items-center gap-2 px-4 py-2 rounded-xl hover:bg-white/10 text-slate-200" role="tab" aria-controls="page-forecast">
+            <span>🌦️</span><span>Forecast</span>
+          </a></li>
+          <li><a href="#/planner" class="nav-link inline-flex items-center gap-2 px-4 py-2 rounded-xl hover:bg-white/10 text-slate-200" role="tab" aria-controls="page-planner">
+            <span>🗺️</span><span>Planner</span>
+          </a></li>
+          <li><a href="#/sources" class="nav-link inline-flex items-center gap-2 px-4 py-2 rounded-xl hover:bg-white/10 text-slate-200" role="tab" aria-controls="page-sources">
+            <span>🛰️</span><span>Data Sources</span>
+          </a></li>
+          <li><a href="#/tips" class="nav-link inline-flex items-center gap-2 px-4 py-2 rounded-xl hover:bg-white/10 text-slate-200" role="tab" aria-controls="page-tips">
+            <span>🧭</span><span>Tips</span>
+          </a></li>
+          <li class="ml-auto">
+            <a href="https://gpm.nasa.gov/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-slate-100">
+              <span>Learn</span> <span aria-hidden="true">↗</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- PAGES -->
+    <main>
+      <!-- PAGE: Forecast -->
+      <section id="page-forecast" class="page relative bg-nasa-forecast rounded-3xl overflow-hidden">
+        <!-- Input + Scenario Card -->
+        <section class="glass rounded-2xl p-5 sm:p-6 lg:p-8">
+          <form id="queryForm" class="grid grid-cols-1 lg:grid-cols-5 gap-4" autocomplete="off" aria-describedby="disclaimer">
+            <div class="lg:col-span-2">
+              <label for="location" class="block text-sm font-semibold text-slate-200 mb-2">Location</label>
+              <div class="relative">
+                <input id="location" name="location" type="text" required placeholder="e.g., Seattle, WA" aria-label="Location" class="w-full ring-focus rounded-xl bg-[#0b1a3f] text-slate-100 placeholder-slate-400 border border-white/10 px-4 py-3" />
+                <div id="suggestions" class="absolute z-10 mt-1 w-full hidden"></div>
+              </div>
+            </div>
+            <div class="">
+              <label for="date" class="block text-sm font-semibold text-slate-200 mb-2">Date</label>
+              <input id="date" name="date" type="date" required class="w-full ring-focus rounded-xl bg-[#0b1a3f] text-slate-100 border border-white/10 px-4 py-3" />
+            </div>
+            <div class="">
+              <label for="time" class="block text-sm font-semibold text-slate-200 mb-2">Time</label>
+              <input id="time" name="time" type="time" required class="w-full ring-focus rounded-xl bg-[#0b1a3f] text-slate-100 border border-white/10 px-4 py-3" />
+            </div>
+            <div class="">
+              <label for="scenario" class="block text-sm font-semibold text-slate-200 mb-2">Simulate Scenario</label>
+              <select id="scenario" class="w-full ring-focus rounded-xl bg-[#0b1a3f] text-slate-100 border border-white/10 px-4 py-3">
+                <option value="auto">Auto (based on location)</option>
+                <option value="sunny">Sunny & Calm</option>
+                <option value="rainy">Rainy & Windy</option>
+                <option value="heat">Heatwave</option>
+                <option value="cold">Cold Snap</option>
+              </select>
+            </div>
+            <div class="lg:col-span-5 flex flex-wrap items-center gap-3 pt-2">
+              <button type="submit" class="px-5 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-500 hover:from-cyan-400 hover:to-indigo-400 text-slate-900 font-bold ring-focus">
+                Get Forecast
+              </button>
+              <button type="button" id="randomBtn" class="px-5 py-3 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-slate-100 ring-focus">
+                Randomize
+              </button>
+              <!-- Fun toggle for users who want less visuals -->
+              <label class="flex items-center gap-2 text-xs text-slate-300 ml-auto select-none">
+                <input id="visualsToggle" type="checkbox" class="accent-cyan-400 cursor-pointer">
+                Reduce effects
+              </label>
+              <span id="disclaimer" class="text-xs text-slate-400">Demo only — uses sample data to illustrate outcomes.</span>
+            </div>
+          </form>
+        </section>
+
+        <!-- Results -->
+        <section class="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Summary and Categories -->
+          <div class="lg:col-span-2 space-y-6">
+            <!-- Overall Recommendation -->
+            <div id="overallCard" class="glass rounded-2xl p-6 sm:p-7 tile-hover reveal" aria-live="polite">
+              <div class="flex items-start gap-4">
+                <div id="overallEmoji" class="text-3xl">🟢</div>
+                <div>
+                  <h2 class="text-xl font-extrabold text-contrast" id="overallTitle">Ready to Celebrate!</h2>
+                  <p class="text-slate-300 mt-1" id="overallText">Conditions look favorable. Enjoy your outdoor plans.</p>
+                </div>
+              </div>
+              <!-- Tiny progress style risk meter -->
+              <div class="mt-5">
+                <div class="flex justify-between text-xs text-slate-300 mb-2">
+                  <span>Low risk</span><span>High risk</span>
+                </div>
+                <div class="h-2 rounded-full bg-white/10 overflow-hidden">
+                  <div id="riskBar" class="h-2 rounded-full bg-gradient-to-r from-emerald-400 via-amber-400 to-rose-500" style="width: 10%;"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Category Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <!-- Temperature -->
+              <div class="relative overflow-hidden glass rounded-2xl p-5 tile-hover reveal" id="tempCard">
+                <div class="absolute -right-10 -top-10 w-40 h-40 rounded-full opacity-20" style="background: radial-gradient(circle, #34d39933, transparent 60%);"></div>
+                <div class="flex items-center justify-between relative z-[1]">
+                  <div class="flex items-center gap-2">
+                    <span class="text-2xl" aria-hidden="true">🌡️</span>
+                    <h3 class="font-bold text-contrast">Temperature</h3>
+                  </div>
+                  <span id="tempChip" class="chip good">Comfortable</span>
+                </div>
+                <p id="tempText" class="text-slate-300 mt-2 text-sm relative z-[1]">24°C • Feels great outside.</p>
+              </div>
+
+              <!-- Rain -->
+              <div class="relative overflow-hidden glass rounded-2xl p-5 tile-hover reveal" id="rainCard">
+                <div class="absolute -right-10 -top-10 w-40 h-40 rounded-full opacity-20" style="background: radial-gradient(circle, #38bdf833, transparent 60%);"></div>
+                <div class="flex items-center justify-between relative z-[1]">
+                  <div class="flex items-center gap-2">
+                    <span class="text-2xl" aria-hidden="true">🌧️</span>
+                    <h3 class="font-bold text-contrast">Rainfall</h3>
+                  </div>
+                  <span id="rainChip" class="chip good">Dry</span>
+                </div>
+                <p id="rainText" class="text-slate-300 mt-2 text-sm relative z-[1]">0.2 mm expected • Minimal chance.</p>
+              </div>
+
+              <!-- Wind -->
+              <div class="relative overflow-hidden glass rounded-2xl p-5 tile-hover reveal" id="windCard">
+                <div class="absolute -right-10 -top-10 w-40 h-40 rounded-full opacity-20" style="background: radial-gradient(circle, #818cf833, transparent 60%);"></div>
+                <div class="flex items-center justify-between relative z-[1]">
+                  <div class="flex items-center gap-2">
+                    <span class="text-2xl" aria-hidden="true">💨</span>
+                    <h3 class="font-bold text-contrast">Wind</h3>
+                  </div>
+                  <span id="windChip" class="chip good">Calm</span>
+                </div>
+                <p id="windText" class="text-slate-300 mt-2 text-sm relative z-[1]">7 km/h • Light breeze.</p>
+              </div>
+
+              <!-- Humidity -->
+              <div class="relative overflow-hidden glass rounded-2xl p-5 tile-hover reveal" id="humidCard">
+                <div class="absolute -right-10 -top-10 w-40 h-40 rounded-full opacity-20" style="background: radial-gradient(circle, #e879f933, transparent 60%);"></div>
+                <div class="flex items-center justify-between relative z-[1]">
+                  <div class="flex items-center gap-2">
+                    <span class="text-2xl" aria-hidden="true">😓</span>
+                    <h3 class="font-bold text-contrast">Humidity</h3>
+                  </div>
+                  <span id="humidChip" class="chip good">Comfortable</span>
+                </div>
+                <p id="humidText" class="text-slate-300 mt-2 text-sm relative z-[1]">48% • Feels fine for most.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chart -->
+          <div class="glass rounded-2xl p-6 sm:p-7 tile-hover reveal" style="transform-style: preserve-3d; perspective: 800px;">
+            <div aria-hidden="true" class="mb-2 text-xs text-slate-300">Interactive bars</div>
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="font-extrabold text-contrast">Forecast Snapshot</h3>
+              <span class="text-xs text-slate-300">Demo chart</span>
+            </div>
+            <div class="space-y-4">
+              <!-- Temperature Bar -->
+              <div>
+                <div class="flex justify-between text-xs text-slate-300 mb-1">
+                  <span>Temperature (°C)</span><span id="tempVal">24</span>
+                </div>
+                <div class="group w-full h-3 rounded-full bg-white/10 cursor-ew-resize" title="Drag to simulate">
+                  <div id="tempBar" class="bar h-3 rounded-full" style="width: 40%; background:#34d399"></div>
+                </div>
+              </div>
+              <!-- Rain Bar -->
+              <div>
+                <div class="flex justify-between text-xs text-slate-300 mb-1">
+                  <span>Rain (mm)</span><span id="rainVal">0.2</span>
+                </div>
+                <div class="group w-full h-3 rounded-full bg-white/10 cursor-ew-resize" title="Drag to simulate">
+                  <div id="rainBar" class="bar h-3 rounded-full" style="width: 5%; background:#38bdf8"></div>
+                </div>
+              </div>
+              <!-- Wind Bar -->
+              <div>
+                <div class="flex justify-between text-xs text-slate-300 mb-1">
+                  <span>Wind (km/h)</span><span id="windVal">7</span>
+                </div>
+                <div class="group w-full h-3 rounded-full bg-white/10 cursor-ew-resize" title="Drag to simulate">
+                  <div id="windBar" class="bar h-3 rounded-full" style="width: 14%; background:#818cf8"></div>
+                </div>
+              </div>
+              <!-- Humidity Bar -->
+              <div>
+                <div class="flex justify-between text-xs text-slate-300 mb-1">
+                  <span>Humidity (%)</span><span id="humidVal">48</span>
+                </div>
+                <div class="group w-full h-3 rounded-full bg-white/10 cursor-ew-resize" title="Drag to simulate">
+                  <div id="humidBar" class="bar h-3 rounded-full" style="width: 48%; background:#e879f9"></div>
+                </div>
+              </div>
+            </div>
+            <p class="text-[11px] text-slate-400 mt-4">Bars animate to match the current scenario.</p>
+          </div>
+        </section>
+      </section>
+
+      <!-- PAGE: Planner (moved Planning Assistant here) -->
+      <section id="page-planner" class="page relative bg-nasa-planner rounded-3xl overflow-hidden">
+        <section class="glass rounded-2xl p-6 sm:p-7 tile-hover">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h3 class="text-xl font-extrabold text-contrast">Planning Assistant</h3>
+              <p class="text-slate-300 text-sm">Build a tailored plan and simple route based on your latest forecast.</p>
+            </div>
+            <div class="text-xs text-slate-300">
+              Latest forecast: <span id="plannerSummary" class="font-semibold text-slate-200">Not set yet</span>
+            </div>
+          </div>
+
+          <form id="planForm" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-sm font-semibold text-slate-200 mb-2">Event Type</label>
+              <select id="eventType" class="w-full ring-focus rounded-xl bg-[#0b1a3f] text-slate-100 border border-white/10 px-4 py-3">
+                <option value="picnic">Picnic</option>
+                <option value="wedding">Wedding</option>
+                <option value="sports">Sports Game</option>
+                <option value="concert">Outdoor Concert</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-slate-200 mb-2">Special Needs</label>
+              <div class="grid grid-cols-2 gap-2 text-sm">
+                <label class="inline-flex items-center gap-2"><input id="needKids" type="checkbox" class="accent-cyan-400"> Kids</label>
+                <label class="inline-flex items-center gap-2"><input id="needAccessibility" type="checkbox" class="accent-cyan-400"> Accessibility</label>
+                <label class="inline-flex items-center gap-2"><input id="needShade" type="checkbox" class="accent-cyan-400"> Shade</label>
+                <label class="inline-flex items-center gap-2"><input id="needFood" type="checkbox" class="accent-cyan-400"> Food Area</label>
+              </div>
+            </div>
+            <div class="flex items-end">
+              <button id="generatePlanBtn" type="button" class="w-full px-5 py-3 rounded-xl bg-gradient-to-r from-emerald-400 to-cyan-500 hover:from-emerald-300 hover:to-cyan-400 text-slate-900 font-bold ring-focus">Generate Plan & Route</button>
+            </div>
+          </form>
+
+          <div class="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Recommendations -->
+            <div>
+              <h4 class="font-bold text-contrast mb-2">Recommendations</h4>
+              <ul id="recList" class="space-y-2 text-sm text-slate-300">
+                <li class="opacity-70">Choose your options and click Generate to see tailored suggestions.</li>
+              </ul>
+            </div>
+
+            <!-- Route Plan -->
+            <div>
+              <h4 class="font-bold text-contrast mb-2">Planned Route</h4>
+              <div id="routeStatus" class="text-xs text-slate-300 mb-2">No route yet.</div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="glass rounded-xl p-3">
+                  <svg id="routeMap" viewBox="0 0 160 120" class="w-full h-32">
+                    <defs>
+                      <linearGradient id="rg" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="#24d2f7"/>
+                        <stop offset="100%" stop-color="#9b8cff"/>
+                      </linearGradient>
+                    </defs>
+                    <rect x="0" y="0" width="160" height="120" rx="10" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)"/>
+                    <path id="routeMapPath" d="M20 100 C 50 90, 70 60, 100 50 S 140 30, 140 20" stroke="url(#rg)" stroke-width="3" fill="none" stroke-linecap="round" stroke-dasharray="0 1"/>
+                    <circle id="routeStart" cx="20" cy="100" r="4" fill="#34d399"/>
+                    <circle id="routeEnd" cx="140" cy="20" r="4" fill="#ef4444"/>
+                  </svg>
+                </div>
+                <ol id="routeList" class="glass rounded-xl p-3 text-sm text-slate-300 space-y-2">
+                  <li class="opacity-70">Your route steps will appear here.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- PAGE: Data Sources -->
+      <section id="page-sources" class="page relative bg-nasa-sources rounded-3xl overflow-hidden">
+        <section class="glass rounded-2xl p-6 sm:p-7">
+          <h3 class="text-xl font-extrabold text-contrast mb-2">About the Data Sources</h3>
+          <p class="text-slate-300 text-sm">
+            This demo simulates conditions inspired by public Earth observation programs. In a real app, we would reference precipitation, reanalysis, and satellite feeds and translate them into simple risk categories for planners.
+          </p>
+          <div class="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="glass rounded-xl p-4">
+              <div class="flex items-center gap-3 mb-2">
+                <span class="badge" title="Global Precipitation">
+                  <svg viewBox="0 0 24 24" fill="none"><path d="M12 3c-2.5 4-6 7.2-6 10.2A6 6 0 0 0 18 13.2C18 10.2 14.5 7 12 3Z" stroke="#24d2f7" stroke-width="2"/></svg>
+                  <span class="text-slate-200 text-sm font-semibold">GPM-style Precipitation</span>
+                </span>
+              </div>
+              <p class="text-slate-300 text-sm">Helps estimate rainfall intensity and timing to flag “Dry / Moderate / Very Wet.”</p>
+            </div>
+
+            <div class="glass rounded-xl p-4">
+              <div class="flex items-center gap-3 mb-2">
+                <span class="badge" title="Reanalysis (winds, temperature)">
+                  <svg viewBox="0 0 24 24" fill="none"><path d="M3 12h10a3 3 0 1 0-3-3" stroke="#9b8cff" stroke-width="2" stroke-linecap="round"/><path d="M6 16h9a3 3 0 1 1-3 3" stroke="#9b8cff" stroke-width="2" stroke-linecap="round"/></svg>
+                  <span class="text-slate-200 text-sm font-semibold">Reanalysis-style Winds & Temp</span>
+                </span>
+              </div>
+              <p class="text-slate-300 text-sm">Drives “Very Hot / Comfortable / Very Cold” and “Calm / Breezy / Very Windy.”</p>
+            </div>
+
+            <div class="glass rounded-xl p-4">
+              <div class="flex items-center gap-3 mb-2">
+                <span class="badge" title="Geostationary imagery">
+                  <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="10" width="6" height="4" rx="1" stroke="#24d2f7" stroke-width="2"/><rect x="15" y="6" width="6" height="4" rx="1" stroke="#24d2f7" stroke-width="2"/><rect x="15" y="14" width="6" height="4" rx="1" stroke="#24d2f7" stroke-width="2"/><path d="M9 12h6" stroke="#24d2f7" stroke-width="2"/></svg>
+                  <span class="text-slate-200 text-sm font-semibold">Geostationary-style Cloud Clues</span>
+                </span>
+              </div>
+              <p class="text-slate-300 text-sm">Gives cloud evolution hints to refine short-term risk for events.</p>
+            </div>
+          </div>
+
+          <p class="text-xs text-slate-400 mt-6">
+            Note: For this prototype, Canva Code doesn’t use live or official agency logos and shows stylized badges instead.
+          </p>
+
+          <div class="mt-3 text-xs text-slate-300">
+            Learn more from trusted sources:
+            <a href="https://gpm.nasa.gov/" target="_blank" rel="noopener noreferrer" class="underline decoration-cyan-400/60 hover:decoration-cyan-300">GPM</a>,
+            <a href="https://gmao.gsfc.nasa.gov/reanalysis/" target="_blank" rel="noopener noreferrer" class="underline decoration-cyan-400/60 hover:decoration-cyan-300">Reanalysis</a>,
+            <a href="https://www.goes.noaa.gov/" target="_blank" rel="noopener noreferrer" class="underline decoration-cyan-400/60 hover:decoration-cyan-300">GOES</a>.
+          </div>
+        </section>
+      </section>
+
+      <!-- PAGE: Tips -->
+      <section id="page-tips" class="page relative bg-nasa-tips rounded-3xl overflow-hidden">
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Planning Tips -->
+          <div class="glass rounded-2xl p-6 sm:p-7">
+            <h3 class="text-xl font-extrabold text-contrast mb-2">Planning Tips</h3>
+            <ul class="space-y-3 text-slate-300 text-sm">
+              <li class="flex items-start gap-3">
+                <span class="text-lg">⛺</span>
+                <div><span class="font-semibold">Have a cover plan.</span> Pop‑up tents or nearby indoor backup reduce rain risk stress.</div>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="text-lg">💧</span>
+                <div><span class="font-semibold">Rain = footing.</span> Consider non‑slip mats and covered food areas during “Moderate / Very Wet.”</div>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="text-lg">🌬️</span>
+                <div><span class="font-semibold">Wind‑proof decor.</span> Use weighted bases and avoid tall signs in “Very Windy.”</div>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="text-lg">🥤</span>
+                <div><span class="font-semibold">Heat safety.</span> Shade, water stations, and breaks during “Very Hot.”</div>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="text-lg">🧣</span>
+                <div><span class="font-semibold">Cold comfort.</span> Heaters or blankets for guests during “Very Cold.”</div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Accessibility & Legend -->
+          <div class="glass rounded-2xl p-6 sm:p-7">
+            <h3 class="text-xl font-extrabold text-contrast mb-3">Legend & Accessibility</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="glass rounded-xl p-4">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <span class="text-2xl">🌡️</span><span class="font-bold text-contrast">Temperature</span>
+                  </div>
+                  <span class="chip good">Comfortable</span>
+                </div>
+                <p class="text-slate-300 text-sm mt-2">“Very Hot 🌡️”, “Comfortable”, “Very Cold ❄️”.</p>
+              </div>
+              <div class="glass rounded-xl p-4">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <span class="text-2xl">🌧️</span><span class="font-bold text-contrast">Rainfall</span>
+                  </div>
+                  <span class="chip warn">Moderate</span>
+                </div>
+                <p class="text-slate-300 text-sm mt-2">“Very Wet 🌧️”, “Moderate”, “Dry”.</p>
+              </div>
+              <div class="glass rounded-xl p-4">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <span class="text-2xl">💨</span><span class="font-bold text-contrast">Wind</span>
+                  </div>
+                  <span class="chip bad">Very Windy 💨</span>
+                </div>
+                <p class="text-slate-300 text-sm mt-2">“Very Windy 💨”, “Breezy”, “Calm”.</p>
+              </div>
+              <div class="glass rounded-xl p-4">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <span class="text-2xl">😓</span><span class="font-bold text-contrast">Humidity</span>
+                  </div>
+                  <span class="chip good">Comfortable</span>
+                </div>
+                <p class="text-slate-300 text-sm mt-2">“Very Humid 😓”, “Moderate”, “Comfortable”.</p>
+              </div>
+            </div>
+            <div class="mt-5 text-slate-300 text-sm">
+              Colors and contrast meet accessible guidelines. All actions support keyboard focus.
+            </div>
+            <div class="mt-2 text-xs text-slate-400">
+              To reduce motion effects, toggle "Reduce effects" in the Forecast section.
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-10 text-center text-xs text-slate-400">
+      Built with a NASA-inspired palette. This is a demo for planning by simplified risk categories.
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

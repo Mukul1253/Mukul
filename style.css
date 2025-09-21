@@ -1,0 +1,107 @@
+:root{
+  --space-900:#0a2a6b; /* deep space blue */
+  --space-800:#0b3d91; /* NASA blue */
+  --space-700:#123b7a;
+  --accent-cyan:#24d2f7;
+  --accent-purple:#9b8cff;
+  --surface:#0d1530; /* dark space canvas */
+  --card:#0f1c44; /* card bg */
+  --success:#14b8a6;
+  --warn:#f59e0b;
+  --danger:#ef4444;
+}
+body{ font-family: "Urbanist", system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji", "Segoe UI Symbol"; }
+
+/* Animated starfield with subtle nebulas */
+.starfield{
+  position: relative;
+  background:
+    radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,.25), transparent 40%),
+    radial-gradient(1.5px 1.5px at 70% 40%, rgba(255,255,255,.18), transparent 40%),
+    radial-gradient(1.5px 1.5px at 40% 80%, rgba(255,255,255,.20), transparent 40%),
+    conic-gradient(from 210deg at 80% 20%, rgba(155,140,255,.08), transparent 40%),
+    conic-gradient(from 40deg at 20% 80%, rgba(36,210,247,.07), transparent 50%),
+    linear-gradient(140deg, var(--space-900), var(--space-800) 50%, var(--space-700));
+  overflow-x: clip;
+}
+/* Decorative orbits and satellites as background (SVG images via data URI) */
+.starfield::before,
+.starfield::after{
+  content:""; position:absolute; inset:0; pointer-events:none; z-index:0;
+  background-repeat: repeat; opacity:.12; animation: drift 60s linear infinite;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'%3E%3Cg fill='none' stroke='%23a8d8ff' stroke-opacity='0.55'%3E%3Ccircle cx='120' cy='120' r='80'/%3E%3Ccircle cx='120' cy='120' r='110' stroke-opacity='0.25'/%3E%3C/g%3E%3Cg transform='translate(40,60)'%3E%3Crect x='0' y='0' width='28' height='12' rx='2' fill='%23a5b4fc'/%3E%3Crect x='30' y='-6' width='10' height='24' rx='2' fill='%2399f6e4'/%3E%3Crect x='-12' y='-6' width='10' height='24' rx='2' fill='%2399f6e4'/%3E%3Crect x='8' y='12' width='12' height='12' rx='2' fill='%23e879f9'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 420px 420px;
+}
+.starfield::after{ opacity:.18; animation-duration: 90s; background-size: 520px 520px; }
+
+@keyframes drift{ from{ background-position:0 0; } to{ background-position: 1000px 0; } }
+@keyframes floaty{ from{ transform: translateY(0); } 50%{ transform: translateY(-6px); } to{ transform: translateY(0); } }
+@keyframes twinkle{ 0%,100%{ opacity:.7 } 50%{ opacity:1 } }
+
+/* Soft glass card */
+.glass{
+  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.ring-focus:focus{ outline: none; box-shadow: 0 0 0 3px rgba(36,210,247,0.45); }
+
+/* Chip colors */
+.chip { border-radius: 9999px; padding: .25rem .65rem; font-weight: 700; font-size: .8rem; }
+.chip.good{ color:#052e2b; background: #a7f3d0; }
+.chip.warn{ color:#4a3001; background: #fde68a; }
+.chip.bad { color:#4f0a0a; background: #fecaca; }
+
+/* Category tiles hover + tilt */
+.tile-hover{ transition: transform .25s ease, box-shadow .25s ease, background .25s ease; transform-style: preserve-3d; will-change: transform; }
+.tile-hover:hover{ transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,.25); }
+
+/* Bar chart animation */
+.bar{ transition: width .7s cubic-bezier(.2,.8,.2,1), background-color .3s ease; }
+
+/* Fade reveal */
+.reveal{ opacity: 0; transform: translateY(6px); transition: opacity .4s ease, transform .4s ease; }
+.reveal.show{ opacity: 1; transform: translateY(0); }
+
+/* Badge "logos" for sources (stylized, not official marks) */
+.badge{ display:inline-flex; align-items:center; gap:.5rem; padding:.4rem .7rem; border-radius:.5rem; border:1px solid rgba(255,255,255,.12); background: rgba(13,21,48,.7); }
+.badge svg{ width:18px; height:18px }
+
+/* High contrast text utilities */
+.text-contrast{ color: #e9eefb; }
+
+/* Nav active underline */
+.nav-link{ position: relative; }
+.nav-link.active::after{
+  content:"";
+  position:absolute; left:0; right:0; bottom:-8px; height:3px;
+  background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+  border-radius: 9999px;
+  animation: twinkle 2.5s ease-in-out infinite;
+}
+
+/* Page transitions */
+.page{ display:none; opacity:0; transform: translateY(8px); transition: opacity .25s ease, transform .25s ease; }
+.page.show{ display:block; opacity:1; transform: translateY(0); }
+
+/* Visuals toggle: reduce motion */
+body.reduce-visuals *{ animation: none !important; transition: none !important; }
+@media (prefers-reduced-motion: reduce){
+  *{ animation: none !important; transition: none !important; }
+}
+/* NASA space backgrounds */
+@keyframes spacePan{ from{ background-position: 50% 0%; } to{ background-position: 50% 100%; } }
+.bg-nasa-forecast::before,
+.bg-nasa-sources::before,
+.bg-nasa-tips::before,
+.bg-nasa-planner::before{ content:""; position:absolute; inset:0; z-index:-1; background-size: cover; background-position: center; background-repeat:no-repeat; filter: saturate(1.05) contrast(1.05) brightness(.9); animation: spacePan 80s linear infinite alternate; }
+.bg-nasa-forecast::before{ background-image: linear-gradient(to bottom, rgba(11,18,48,.75), rgba(11,18,48,.92)), url('https://images-assets.nasa.gov/image/iss066e156004/iss066e156004~orig.jpg'); }
+.bg-nasa-sources::before{ background-image: linear-gradient(to bottom, rgba(11,18,48,.78), rgba(11,18,48,.95)), url('https://images-assets.nasa.gov/image/GSFC_20171208_Archive_e001997/GSFC_20171208_Archive_e001997~orig.jpg'); animation-duration: 95s; }
+.bg-nasa-tips::before{ background-image: linear-gradient(to bottom, rgba(11,18,48,.78), rgba(11,18,48,.95)), url('https://images-assets.nasa.gov/image/hs-2007-16-a/hs-2007-16-a~orig.jpg'); animation-duration: 110s; }
+.bg-nasa-planner::before{ background-image: linear-gradient(to bottom, rgba(11,18,48,.78), rgba(11,18,48,.95)), url('https://images-assets.nasa.gov/image/PIA04921/PIA04921~orig.jpg'); animation-duration: 120s; }
+
+/* Effects animations */
+@keyframes rainFall{ to{ transform: translateY(110vh); opacity:.85; } }
+@keyframes windMove{ from{ transform: translateX(-12vw); opacity:0 } to{ transform: translateX(112vw); opacity:.55 } }
+@keyframes confetti{ to{ transform: translateY(110vh) rotate(720deg); opacity:.95 } }
